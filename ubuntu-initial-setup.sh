@@ -17,7 +17,8 @@ else
 fi
 
 # Oh My Zsh 설치 (이미 설치되어 있는지 확인)
-if [ ! -d "$HOME/.oh-my-zsh" ]; then
+OH_MY_ZSH_DIR="$HOME/.oh-my-zsh"
+if [ ! -d "$OH_MY_ZSH_DIR" ]; then
     sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
 else
     echo "Oh My Zsh는 이미 설치되어 있습니다."
@@ -26,12 +27,20 @@ fi
 # Git 사용자 이름 입력 받기
 echo "Git 사용자 이름을 입력하세요: "
 read git_username
-git config --global user.name "$git_username"
+if [ -n "$git_username" ]; then
+    git config --global user.name "$git_username"
+else
+    echo "Git 사용자 이름을 입력하지 않았습니다. 설정을 건너뜁니다."
+fi
 
 # Git 사용자 이메일 입력 받기
 echo "Git 사용자 이메일을 입력하세요: "
 read git_email
-git config --global user.email "$git_email"
+if [ -n "$git_email" ]; then
+    git config --global user.email "$git_email"
+else
+    echo "Git 사용자 이메일을 입력하지 않았습니다. 설정을 건너뜁니다."
+fi
 
 # Git 기본 에디터 설정
 git config --global core.editor vim
@@ -40,42 +49,52 @@ git config --global core.editor vim
 git config --global init.defaultBranch main
 
 # Zsh 플러그인 설치
-ZSH_CUSTOM=${ZSH_CUSTOM:-~/.oh-my-zsh/custom}
+ZSH_CUSTOM="$HOME/.oh-my-zsh/custom"
 
 # Powerlevel10k 테마 설치
-git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
+POWERLEVEL10K_DIR="${ZSH_CUSTOM}/themes/powerlevel10k"
+if [ ! -d "$POWERLEVEL10K_DIR" ]; then
+    git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "$POWERLEVEL10K_DIR"
+else
+    echo "Powerlevel10k 테마는 이미 설치되어 있습니다."
+fi
 
 # zsh-syntax-highlighting 플러그인 설치
-if [ ! -d "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting" ]; then
-    git clone https://github.com/zsh-users/zsh-syntax-highlighting.git $ZSH_CUSTOM/plugins/zsh-syntax-highlighting
+ZSH_SYNTAX_HIGHLIGHTING_DIR="${ZSH_CUSTOM}/plugins/zsh-syntax-highlighting"
+if [ ! -d "$ZSH_SYNTAX_HIGHLIGHTING_DIR" ]; then
+    git clone https://github.com/zsh-users/zsh-syntax-highlighting.git "$ZSH_SYNTAX_HIGHLIGHTING_DIR"
 else
     echo "zsh-syntax-highlighting 플러그인은 이미 설치되어 있습니다."
 fi
 
 # zsh-autosuggestions 플러그인 설치
-if [ ! -d "$ZSH_CUSTOM/plugins/zsh-autosuggestions" ]; then
-    git clone https://github.com/zsh-users/zsh-autosuggestions $ZSH_CUSTOM/plugins/zsh-autosuggestions
+ZSH_AUTOSUGGESTIONS_DIR="${ZSH_CUSTOM}/plugins/zsh-autosuggestions"
+if [ ! -d "$ZSH_AUTOSUGGESTIONS_DIR" ]; then
+    git clone https://github.com/zsh-users/zsh-autosuggestions "$ZSH_AUTOSUGGESTIONS_DIR"
 else
     echo "zsh-autosuggestions 플러그인은 이미 설치되어 있습니다."
 fi
 
 # .zshrc 파일에 플러그인 추가 및 Powerlevel10k 테마 설정
-if ! grep -q "plugins=(" ~/.zshrc; then
-    echo 'plugins=(git zsh-syntax-highlighting zsh-autosuggestions)' >> ~/.zshrc
+ZSHRC_FILE="$HOME/.zshrc"
+if ! grep -q "plugins=(" "$ZSHRC_FILE"; then
+    echo 'plugins=(git zsh-syntax-highlighting zsh-autosuggestions)' >> "$ZSHRC_FILE"
 else
-    sed -i '/^plugins=/ s/)$/ zsh-syntax-highlighting zsh-autosuggestions)/' ~/.zshrc
+    sed -i '/^plugins=/ s/)$/ zsh-syntax-highlighting zsh-autosuggestions)/' "$ZSHRC_FILE"
 fi
 
 # Powerlevel10k 테마 설정
-sed -i 's/^ZSH_THEME=.*/ZSH_THEME="powerlevel10k\/powerlevel10k"/' ~/.zshrc
+sed -i 's/^ZSH_THEME=.*/ZSH_THEME="powerlevel10k\/powerlevel10k"/' "$ZSHRC_FILE"
 
 # .zshrc 파일을 올바른 형식으로 설정
-if ! grep -q "source \$ZSH/oh-my-zsh.sh" ~/.zshrc; then
-    echo 'source $ZSH/oh-my-zsh.sh' >> ~/.zshrc
+if ! grep -q "source \$ZSH/oh-my-zsh.sh" "$ZSHRC_FILE"; then
+    echo 'source $ZSH/oh-my-zsh.sh' >> "$ZSHRC_FILE"
 fi
 
-# Zsh를 기본 셸로 설정
-echo "exec zsh" >> ~/.bashrc
+# Zsh를 기본 셸로 설정 및 적용
+chsh -s "$(which zsh)"
 
-# Zsh로 변경
-exec zsh
+# 현재 셸을 새로운 셸로 변경
+exec "$(which zsh)"
+
+echo "스크립트 실행이 완료되었습니다."
