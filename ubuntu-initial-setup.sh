@@ -74,5 +74,8 @@ if ! grep -q "source \$ZSH/oh-my-zsh.sh" ~/.zshrc; then
     echo 'source $ZSH/oh-my-zsh.sh' >> ~/.zshrc
 fi
 
+# Zsh를 기본 셸로 설정
+echo "exec zsh" >> ~/.bashrc
+
 # Zsh로 변경
 exec zsh
