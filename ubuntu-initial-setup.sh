@@ -36,6 +36,9 @@ git config --global user.email "$git_email"
 # Git 기본 에디터 설정
 git config --global core.editor vim
 
+# Git 초기 브랜치 설정
+git config --global init.defaultBranch main
+
 # Zsh 플러그인 설치
 ZSH_CUSTOM=${ZSH_CUSTOM:-~/.oh-my-zsh/custom}
 
