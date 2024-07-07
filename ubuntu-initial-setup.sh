@@ -23,6 +23,19 @@ else
     echo "Oh My Zsh는 이미 설치되어 있습니다."
 fi
 
+# Git 사용자 이름 입력 받기
+echo "Git 사용자 이름을 입력하세요: "
+read git_username
+git config --global user.name "$git_username"
+
+# Git 사용자 이메일 입력 받기
+echo "Git 사용자 이메일을 입력하세요: "
+read git_email
+git config --global user.email "$git_email"
+
+# Git 기본 에디터 설정
+git config --global core.editor vim
+
 # Zsh 플러그인 설치
 ZSH_CUSTOM=${ZSH_CUSTOM:-~/.oh-my-zsh/custom}
 
