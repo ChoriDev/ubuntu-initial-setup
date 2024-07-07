@@ -25,7 +25,7 @@ else
 fi
 
 # Git 사용자 이름 입력 받기
-echo "Git 사용자 이름을 입력하세요: "
+echo "Git 사용자 이름을 입력하세요:"
 read git_username
 if [ -n "$git_username" ]; then
     git config --global user.name "$git_username"
@@ -34,7 +34,7 @@ else
 fi
 
 # Git 사용자 이메일 입력 받기
-echo "Git 사용자 이메일을 입력하세요: "
+echo "Git 사용자 이메일을 입력하세요:"
 read git_email
 if [ -n "$git_email" ]; then
     git config --global user.email "$git_email"
@@ -94,4 +94,5 @@ fi
 # Zsh를 기본 셸로 설정
 echo "exec zsh" >> ~/.bashrc
 
-echo "스크립트 실행이 완료되었습니다."
+# Zsh로 변경
+exec zsh
