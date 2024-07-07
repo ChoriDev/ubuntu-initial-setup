@@ -91,10 +91,7 @@ if ! grep -q "source \$ZSH/oh-my-zsh.sh" "$ZSHRC_FILE"; then
     echo 'source $ZSH/oh-my-zsh.sh' >> "$ZSHRC_FILE"
 fi
 
-# Zsh를 기본 셸로 설정 및 적용
-chsh -s "$(which zsh)"
-
-# 현재 셸을 새로운 셸로 변경
-exec "$(which zsh)"
+# Zsh를 기본 셸로 설정
+echo "exec zsh" >> ~/.bashrc
 
 echo "스크립트 실행이 완료되었습니다."
