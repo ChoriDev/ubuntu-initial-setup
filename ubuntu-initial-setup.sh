@@ -1,19 +1,30 @@
 #!/bin/sh
 
-# 백업: /etc/apt/sources.list 파일을 백업
-sudo cp -p /etc/apt/sources.list /etc/apt/sources.list.bak.$(date +%Y%m%d)
+# 우분투 버전 확인
+ubuntu_version=$(grep VERSION_ID /etc/os-release | cut -d '"' -f 2)
 
-# 패키지 저장소를 카카오 미러로 변경
-sudo sed -i 's/archive.ubuntu.com/mirror.kakao.com/g' /etc/apt/sources.list
+# 백업 및 패키지 저장소 변경
+if [ "$ubuntu_version" = "22.04" ]; then
+    # 22.04 버전 처리
+    sudo cp -p /etc/apt/sources.list /etc/apt/sources.list.bak.$(date +%Y%m%d)
+    sudo sed -i 's/archive.ubuntu.com/mirror.kakao.com/g' /etc/apt/sources.list
+elif [ "$ubuntu_version" = "24.04" ]; then
+    # 24.04 버전 처리
+    sudo cp -p /etc/apt/sources.list.d/ubuntu.sources /etc/apt/sources.list.d/ubuntu.sources.bak.$(date +%Y%m%d)
+    sudo sed -i 's/archive.ubuntu.com/mirror.kakao.com/g' /etc/apt/sources.list.d/ubuntu.sources
+else
+    echo "지원하지 않는 우분투 버전입니다."
+    exit 1
+fi
 
 # 업데이트 및 업그레이드: 패키지 목록을 업데이트하고 업그레이드, 불필요한 패키지 제거
 sudo apt update && sudo apt -y upgrade && sudo apt -y autoremove
 
-# Zsh 설치 (이미 설치되어 있는지 확인)
+# zsh 설치 (이미 설치되어 있는지 확인)
 if ! command -v zsh >/dev/null 2>&1; then
     sudo apt -y install zsh
 else
-    echo "Zsh는 이미 설치되어 있습니다."
+    echo "zsh는 이미 설치되어 있습니다."
 fi
 
 # Oh My Zsh 설치 (이미 설치되어 있는지 확인)
@@ -48,7 +59,7 @@ git config --global core.editor vim
 # Git 초기 브랜치 설정
 git config --global init.defaultBranch main
 
-# Zsh 플러그인 설치
+# zsh 플러그인 설치
 ZSH_CUSTOM="$HOME/.oh-my-zsh/custom"
 
 # Powerlevel10k 테마 설치
@@ -91,8 +102,8 @@ if ! grep -q "source \$ZSH/oh-my-zsh.sh" "$ZSHRC_FILE"; then
     echo 'source $ZSH/oh-my-zsh.sh' >> "$ZSHRC_FILE"
 fi
 
-# Zsh를 기본 셸로 설정
-echo "exec zsh" >> ~/.bashrc
+# zsh를 기본 셸로 설정
+chsh -s $(which zsh)
 
-# Zsh로 변경
+# zsh로 변경
 exec zsh
