@@ -102,8 +102,12 @@ if ! grep -q "source \$ZSH/oh-my-zsh.sh" "$ZSHRC_FILE"; then
     echo 'source $ZSH/oh-my-zsh.sh' >> "$ZSHRC_FILE"
 fi
 
-# zsh를 기본 셸로 설정
-chsh -s $(which zsh)
+# 기본 셸이 zsh가 아닌 경우에만 zsh를 기본 셸로 설정
+if [ "$(basename "$SHELL")" != "zsh" ]; then
+    echo "기본 셸을 zsh로 변경합니다. 비밀번호를 입력해주세요."
+    chsh -s "$(command -v zsh)"
+fi
 
-# zsh로 변경
-exec zsh
+echo ""
+echo "Oh My Zsh 설치가 완료되었습니다."
+echo "터미널을 다시 시작하거나 로그인해주세요."
