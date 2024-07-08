@@ -30,7 +30,7 @@ fi
 # Oh My Zsh 설치 (이미 설치되어 있는지 확인)
 OH_MY_ZSH_DIR="$HOME/.oh-my-zsh"
 if [ ! -d "$OH_MY_ZSH_DIR" ]; then
-    sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+    RUNZSH=no sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
 else
     echo "Oh My Zsh는 이미 설치되어 있습니다."
 fi
@@ -102,12 +102,5 @@ if ! grep -q "source \$ZSH/oh-my-zsh.sh" "$ZSHRC_FILE"; then
     echo 'source $ZSH/oh-my-zsh.sh' >> "$ZSHRC_FILE"
 fi
 
-# 기본 셸이 zsh가 아닌 경우에만 zsh를 기본 셸로 설정
-if [ "$(basename "$SHELL")" != "zsh" ]; then
-    echo "기본 셸을 zsh로 변경합니다. 비밀번호를 입력해주세요."
-    chsh -s "$(command -v zsh)"
-fi
-
-echo ""
-echo "Oh My Zsh 설치가 완료되었습니다."
-echo "터미널을 다시 시작하거나 로그인해주세요."
+# zsh로 변경
+exec zsh
