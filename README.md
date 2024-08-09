@@ -37,7 +37,7 @@ cd ubuntu-initial-setup
 ## 주의사항
 
 - 스크립트는 WSL2에 등록하는 Ubuntu 배포판에 맞춰서 작성되었습니다.
-- 패키지 저장소는 Ubuntu의 버전이 22.04 또는 24.04인 경우에만 변경됩니다.
+- Ubuntu의 버전이 22.04 또는 24.04인 경우에만 스크립트를 사용할 수 있습니다.
 - 스크립트가 변경하는 내용을 이해하고 확인한 후 사용하시기를 권장합니다.
 - powerlevel10k 테마 적용 시 일부 문자가 깨져 보일 수 있습니다.
     - 필요 시 [powerlevel10k 깃허브](https://github.com/romkatv/powerlevel10k?tab=readme-ov-file#meslo-nerd-font-patched-for-powerlevel10k)를 참고하여 글꼴을 설치하면 됩니다.
