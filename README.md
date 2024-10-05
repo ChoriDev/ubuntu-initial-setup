@@ -31,8 +31,9 @@ cd ubuntu-initial-setup
     - 사용자 이메일 설정
     - 기본 에디터를 vim을 변경
     - 초기 브랜치를 main으로 설정
-5. Powerlevel10k 테마와 zsh-syntax-highlighting, zsh-autosuggestions 플러그인을 설치합니다.
-6. bash 셸을 zsh 셸로 변경합니다.
+5. 한글과 관련하여 로케일을 설정합니다.
+6. Powerlevel10k 테마와 zsh-syntax-highlighting, zsh-autosuggestions 플러그인을 설치합니다.
+7. bash 셸을 zsh 셸로 변경합니다.
 
 ## 주의사항
 

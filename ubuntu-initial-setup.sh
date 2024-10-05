@@ -18,11 +18,11 @@ else
 fi
 
 # 업데이트 및 업그레이드: 패키지 목록을 업데이트하고 업그레이드, 불필요한 패키지 제거
-sudo apt update && sudo apt -y upgrade && sudo apt -y autoremove
+sudo apt update && sudo apt upgrade -y && sudo apt autoremove -y
 
 # zsh 설치 (이미 설치되어 있는지 확인)
 if ! command -v zsh >/dev/null 2>&1; then
-    sudo apt -y install zsh
+    sudo apt install -y zsh
 else
     echo "zsh는 이미 설치되어 있습니다."
 fi
@@ -58,6 +58,16 @@ git config --global core.editor vim
 
 # Git 초기 브랜치 설정
 git config --global init.defaultBranch main
+
+# 한글 패키지 설치 확인 후 설치
+if ! dpkg -l | grep -q language-pack-ko; then
+    sudo apt install -y language-pack-ko
+else
+    echo "한글 패키지는 이미 설치되어 있습니다."
+fi
+
+# 한글 로케일 설치 및 설정
+sudo locale-gen ko_KR.UTF-8 && sudo update-locale LANG=ko_KR.UTF-8 LC_ALL=ko_KR.UTF-8
 
 # zsh 플러그인 설치
 ZSH_CUSTOM="$HOME/.oh-my-zsh/custom"
