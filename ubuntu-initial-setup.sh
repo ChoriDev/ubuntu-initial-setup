@@ -6,11 +6,9 @@ ubuntu_version=$(grep VERSION_ID /etc/os-release | cut -d '"' -f 2)
 # Backup and change package repository
 if [ "$ubuntu_version" = "22.04" ]; then
     # Process for version 22.04
-    sudo cp -p /etc/apt/sources.list /etc/apt/sources.list.bak.$(date +%Y%m%d)
     sudo sed -i 's/archive.ubuntu.com/mirror.kakao.com/g' /etc/apt/sources.list
 elif [ "$ubuntu_version" = "24.04" ]; then
     # Process for version 24.04
-    sudo cp -p /etc/apt/sources.list.d/ubuntu.sources /etc/apt/sources.list.d/ubuntu.sources.bak.$(date +%Y%m%d)
     sudo sed -i 's/archive.ubuntu.com/mirror.kakao.com/g' /etc/apt/sources.list.d/ubuntu.sources
 else
     echo "Unsupported Ubuntu version."
@@ -69,22 +67,9 @@ git config --global init.defaultBranch main
 # # Install and configure Korean locale
 # sudo locale-gen ko_KR.UTF-8 && sudo update-locale LANG=ko_KR.UTF-8 LC_ALL=ko_KR.UTF-8
 
-# Set Korean locale for formats except system language
-sudo locale-gen ko_KR.UTF-8
-sudo update-locale \
-    LC_NUMERIC=ko_KR.UTF-8 \
-    LC_TIME=ko_KR.UTF-8 \
-    LC_MONETARY=ko_KR.UTF-8 \
-    LC_PAPER=ko_KR.UTF-8 \
-    LC_NAME=ko_KR.UTF-8 \
-    LC_ADDRESS=ko_KR.UTF-8 \
-    LC_TELEPHONE=ko_KR.UTF-8 \
-    LC_MEASUREMENT=ko_KR.UTF-8 \
-    LC_IDENTIFICATION=ko_KR.UTF-8
-
 # zsh custom settings
 ZSH_CUSTOM="$HOME/.oh-my-zsh/custom"
-
+ZSHRC_FILE="$HOME/.zshrc"
 # # Install Powerlevel10k theme
 # POWERLEVEL10K_DIR="${ZSH_CUSTOM}/themes/powerlevel10k"
 # if [ ! -d "$POWERLEVEL10K_DIR" ]; then
@@ -96,8 +81,8 @@ ZSH_CUSTOM="$HOME/.oh-my-zsh/custom"
 # # Configure Powerlevel10k theme
 # sed -i 's/^ZSH_THEME=.*/ZSH_THEME="powerlevel10k\/powerlevel10k"/' "$ZSHRC_FILE"
 
-# Configure zhann theme
-sed -i 's/^ZSH_THEME=.*/ZSH_THEME="powerlevel10k\/powerlevel10k"/' "$ZSHRC_FILE"
+# Change zsh theme to zhann
+sed -i 's/^ZSH_THEME=.*/ZSH_THEME="zhann"/' "$ZSHRC_FILE"
 
 # Install zsh-syntax-highlighting plugin
 ZSH_SYNTAX_HIGHLIGHTING_DIR="${ZSH_CUSTOM}/plugins/zsh-syntax-highlighting"
@@ -116,7 +101,6 @@ else
 fi
 
 # Add plugins to .zshrc file
-ZSHRC_FILE="$HOME/.zshrc"
 if ! grep -q "plugins=(" "$ZSHRC_FILE"; then
     echo 'plugins=(git zsh-syntax-highlighting zsh-autosuggestions)' >> "$ZSHRC_FILE"
 else
