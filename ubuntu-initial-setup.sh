@@ -85,15 +85,18 @@ sudo update-locale \
 # zsh custom settings
 ZSH_CUSTOM="$HOME/.oh-my-zsh/custom"
 
-# Install Powerlevel10k theme
-POWERLEVEL10K_DIR="${ZSH_CUSTOM}/themes/powerlevel10k"
-if [ ! -d "$POWERLEVEL10K_DIR" ]; then
-    git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "$POWERLEVEL10K_DIR"
-else
-    echo "Powerlevel10k theme is already installed."
-fi
+# # Install Powerlevel10k theme
+# POWERLEVEL10K_DIR="${ZSH_CUSTOM}/themes/powerlevel10k"
+# if [ ! -d "$POWERLEVEL10K_DIR" ]; then
+#     git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "$POWERLEVEL10K_DIR"
+# else
+#     echo "Powerlevel10k theme is already installed."
+# fi
 
-# Configure Powerlevel10k theme
+# # Configure Powerlevel10k theme
+# sed -i 's/^ZSH_THEME=.*/ZSH_THEME="powerlevel10k\/powerlevel10k"/' "$ZSHRC_FILE"
+
+# Configure zhann theme
 sed -i 's/^ZSH_THEME=.*/ZSH_THEME="powerlevel10k\/powerlevel10k"/' "$ZSHRC_FILE"
 
 # Install zsh-syntax-highlighting plugin
